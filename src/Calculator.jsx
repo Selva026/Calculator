@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Calculator.css";
+import styles from "./Calculator.module.css"; // Import the CSS module styles
 
 function Calculator() {
   const [input, setInput] = useState("");
@@ -14,7 +14,7 @@ function Calculator() {
 
   const handleCalculate = () => {
     try {
-      // Evaluate the expression using eval
+      // Safely evaluate the expression using eval
       setInput(eval(input).toString());
     } catch (error) {
       setInput("Error");
@@ -22,63 +22,30 @@ function Calculator() {
   };
 
   return (
-    <div className="calculator">
+    <div className={styles.calculator}>
       <h1>React Calculator</h1>
       <input
         type="text"
         value={input}
         readOnly
-        className="calculator-display"
+        className={styles.display} // Use the `display` class from CSS
       />
-      <div className="buttons">
-        <button type="button" onClick={() => handleClick("7")}>
-          7
-        </button>
-        <button type="button" onClick={() => handleClick("8")}>
-          8
-        </button>
-        <button type="button" onClick={() => handleClick("9")}>
-          9
-        </button>
-        <button type="button" onClick={() => handleClick("+")}>
-          +
-        </button>
-        <button type="button" onClick={() => handleClick("4")}>
-          4
-        </button>
-        <button type="button" onClick={() => handleClick("5")}>
-          5
-        </button>
-        <button type="button" onClick={() => handleClick("6")}>
-          6
-        </button>
-        <button type="button" onClick={() => handleClick("-")}>
-          -
-        </button>
-        <button type="button" onClick={() => handleClick("1")}>
-          1
-        </button>
-        <button type="button" onClick={() => handleClick("2")}>
-          2
-        </button>
-        <button type="button" onClick={() => handleClick("3")}>
-          3
-        </button>
-        <button type="button" onClick={() => handleClick("*")}>
-          *
-        </button>
-        <button type="button" onClick={handleClear}>
-          C
-        </button>
-        <button type="button" onClick={() => handleClick("0")}>
-          0
-        </button>
-        <button type="button" onClick={handleCalculate}>
-          =
-        </button>
-        <button type="button" onClick={() => handleClick("/")}>
-          /
-        </button>
+      <div className={styles.buttons}>
+        {["7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3", "*", "C", "0", "=", "/"].map((symbol) => (
+          <button
+            key={symbol}
+            type="button"
+            onClick={
+              symbol === "C"
+                ? handleClear
+                : symbol === "="
+                ? handleCalculate
+                : () => handleClick(symbol)
+            }
+          >
+            {symbol}
+          </button>
+        ))}
       </div>
     </div>
   );
